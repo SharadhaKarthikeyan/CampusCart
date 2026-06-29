@@ -1,0 +1,39 @@
+# Node dependencies
+node_modules/
+jspm_packages/
+.npm
+.eslintcache
+
+# Production builds
+dist/
+build/
+out/
+.next/
+
+# Local SQLite databases & journals
+*.db
+*.db-journal
+dev.db
+dev.db-journal
+
+# Secrets and environment configs
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Image uploads (ignore uploaded items, keep directories)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# IDEs, editors, and system files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
