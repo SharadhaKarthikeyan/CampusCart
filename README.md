@@ -254,9 +254,4 @@ For production deployment, image storage should be migrated from local uploads t
 *   **Drop-off Maps**: Add mapping locations for specific campus drop-off zones.
 
 ---
-
-## Resume Bullet
-> "Built CampusCart, a full-stack campus marketplace using React, TypeScript, Node.js, Express, Prisma, SQLite, and JWT authentication, enabling students to create listings, upload images, search/filter items, contact sellers, and manage item status through a seller dashboard."
-
----
 **Author: Sharadha Karthikeyan**
