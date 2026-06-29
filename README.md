@@ -1,200 +1,241 @@
-# CampusCart | Campus Marketplace
+# CampusCart: Campus-Focused Buy/Sell Marketplace and Student Trading Platform
 
-CampusCart is a secure, campus-focused buy/sell marketplace designed for university students to trade items like textbooks, electronics, clothing, and furniture. This project is a realistic, polished, and fully functional portfolio application built using modern web development practices.
-
----
-
-## 🛠️ Tech Stack
-
-**Frontend:**
-- **Vite + React** with **TypeScript** for a fast and type-safe user interface.
-- **Tailwind CSS** for custom color palettes and responsive mobile-first layouts.
-- **React Router (v6)** for client-side routing.
-- **Axios** with request interceptors to automatically handle JWT auth headers.
-- **Lucide React** for high-quality dashboard and interface icons.
-
-**Backend:**
-- **Node.js** & **Express** server in **TypeScript**.
-- **Prisma ORM** for type-safe database queries.
-- **SQLite** for zero-configuration, frictionless local database development (designed to easily switch back to **PostgreSQL** in production).
-- **JWT (JSON Web Token)** for user authentication sessions.
-- **bcryptjs** for secure password hashing.
-- **Multer** for handling local image uploads statically served by the backend.
+![React](https://img.shields.io/badge/React-19.2-blue.svg?style=flat&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue.svg?style=flat&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Express-green.svg?style=flat&logo=nodedotjs&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-123547.svg?style=flat&logo=prisma&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Database-lightgrey.svg?style=flat&logo=sqlite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38bdf8.svg?style=flat&logo=tailwindcss&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat)
 
 ---
 
-## 🌟 Key Features
+## Project Overview
+University students frequently need to sell used textbooks, dorm furniture, electronics, and clothing, or buy affordable items from graduating students. Generic public marketplaces lack trust and expose students to shipping costs or safety concerns when meeting strangers off-campus.
 
-1. **JWT Authentication & Protection:**
-   - Password hashing with salt generation.
-   - Protected endpoints on the backend.
-   - Frontend Auth Context persisting login sessions in `localStorage`.
-   - Access-control logic preventing non-owners from editing/deleting items.
+CampusCart is a secure, campus-focused buy/sell marketplace web application. It connects students within a trusted university community, enabling them to browse listings, filter products, manage items, and contact sellers. The project utilizes a modern full-stack architecture to deliver a polished, responsive, and secure trading platform.
 
-2. **Marketplace Navigation & Search Filters:**
-   - Responsive card grid displaying titles, images, categories, conditions, locations, and posted dates.
-   - Real-time search keyword querying against titles and descriptions.
-   - Filtering options for **Category**, **Condition**, **Item Status**, and **Budget Max Price**.
+## Project Background
+CampusCart was developed as a complete portfolio project to demonstrate end-to-end full-stack software development skills. Rather than a basic mock application, it builds a fully functioning marketplace integrating local image hosting, structured database models, and relational queries.
 
-3. **Seller Dashboard:**
-   - Visual dashboard summarising total listings, active items, sold items, and calculated overall earnings from sold products.
-   - Quick inline card control triggers for editing, deleting, or marking an item as sold.
+The platform includes JWT-based user authentication, secure password hashing, custom role-based route protection, static file uploads, and a visual dashboard for sellers. The workspace uses SQLite for local configuration simplicity (designed to easily swap to PostgreSQL in production), combined with a Vite-React frontend to model a responsive user experience.
 
-4. **Product Details & In-App Contact:**
-   - Deep details display page (full description, condition, location, post date).
-   - "Contact Seller" mailto link auto-generating an email template for buyer inquiry.
-   - Dynamic safety note reminding students to meet in public campus zones.
-
-5. **Image Uploads:**
-   - Integrated Multer processing local image storage in `backend/uploads/`.
-   - Supports image attachment on creation and image replacement during edits.
+## Portfolio Highlights
+This project demonstrates proficiency in:
+*   **Full-Stack TypeScript Integration**: Shared type definitions, type-safe API requests, and controller routing models.
+*   **Database Relational Mapping**: Constructing one-to-many associations (User has many Listings) and querying relational models with Prisma ORM.
+*   **Image Processing & Local Storage**: Configuring Multer disk storage on the backend to dynamically save and statically serve uploaded files.
+*   **Secure Authentication (JWT & Cryptography)**: Storing hashed password keys with bcryptjs and validating client sessions with bearer JWT authorization middleware.
+*   **Responsive Mobile-First UI**: Building collapsible navbar drawers, interactive filters, card lists, and skeleton loading views with Tailwind CSS.
+*   **Interactive Analytics Dashboard**: Calculating active inventory levels, sales conversions, and estimated cumulative profit metrics dynamically.
 
 ---
 
-## 📂 Folder Structure
+## Business Problem
+University students suffer from financial constraints and lack a direct, trusted method to exchange goods locally. Using public listings services (like Craigslist or eBay) introduces risks of scams, requires expensive shipping, or forces students to meet off-campus. Facility managers and housing offices also face excessive waste when departing students discard usable furniture and electronics due to a lack of simple redistribution channels on campus.
 
-```text
+## Project Objective
+To build a multi-layered trading platform that:
+1.  **Ingests & Visualizes** items in a responsive card grid mapping category, condition, price, and campus location.
+2.  **Protects User Sessions** using JWT authentication, blocking unauthorized edits, deletes, or status changes.
+3.  **Facilitates Safe Meetups** by restricting communication to official campus emails and highlighting physical safety reminders.
+4.  **Generates Seller Analytics** to summarize total active posts and calculate cumulative sales earnings.
+
+---
+
+## Dataset Description
+The platform operates on a relational database mapped through Prisma, containing two core entities:
+
+*   **User Model**:
+    *   *Attributes*: `id` (Auto-increment), `name`, `email` (Unique), `passwordHash`, `createdAt`, `updatedAt`.
+    *   *Relations*: Has a one-to-many link to the `Listing` model.
+*   **Listing Model**:
+    *   *Attributes*: `id` (Auto-increment), `sellerId`, `title`, `description`, `price` (Float), `category`, `condition`, `location`, `imageUrl` (Nullable), `status` (Default: "Available"), `createdAt`, `updatedAt`.
+    *   *Relations*: Belongs to a single `User` model.
+
+---
+
+## Tools and Technologies
+*   **Frontend**: React (v19), TypeScript, Vite, Tailwind CSS, React Router (v6), Axios, Lucide React.
+*   **Backend**: Node.js, Express, TypeScript, Multer, JWT (`jsonwebtoken`), `bcryptjs`.
+*   **Database**: SQLite (local dev), PostgreSQL (production-ready via Docker), Prisma ORM.
+
+---
+
+## Folder Structure
+```
 CampusCart/
 ├── backend/
 │   ├── prisma/
-│   │   ├── migrations/      # Auto-generated database migration files
-│   │   ├── schema.prisma    # Prisma SQLite schema definition
-│   │   └── seed.ts          # Database seed script
+│   │   ├── migrations/                  # Database schema migrations history
+│   │   ├── schema.prisma                # Database schema model mapping
+│   │   └── seed.ts                      # Seeder creating 2 users and 10 listings
 │   ├── src/
-│   │   ├── config/          # Instantiated DB Client
-│   │   ├── controllers/     # Controller handlers for auth & listings
-│   │   ├── middleware/      # Authentication, Multer file upload, & Error Handlers
-│   │   ├── routes/          # Express API route endpoints
-│   │   ├── types/           # Request/User TypeScript interfaces
-│   │   └── index.ts         # Main backend application entry point
-│   ├── uploads/             # Server directory storing product images
-│   ├── .env.example         # Template for server configuration
-│   └── package.json         # Backend node scripts & dependencies
+│   │   ├── config/                      # Database client instantiations
+│   │   ├── controllers/                 # Express route handlers for auth & listings
+│   │   ├── middleware/                  # Token authentication, uploads, & errors
+│   │   ├── routes/                      # Route definitions
+│   │   ├── types/                       # Custom TypeScript request definitions
+│   │   └── index.ts                     # Main Express server entry point
+│   ├── uploads/                         # Directory storing listing image files
+│   ├── .env.example
+│   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── components/      # Common UI parts (Navbar, ProtectedRoute)
-│   │   ├── context/         # AuthContext state provider
-│   │   ├── pages/           # Marketplace pages (Home, Details, Create, Edit, Dashboard, Login, Signup)
-│   │   ├── services/        # Axios API configurations
-│   │   ├── App.tsx          # Router layout and wrapper mounting
-│   │   ├── index.css        # Stylesheet styling directives
-│   │   └── main.tsx         # Document React mount hook
-│   ├── .env.example         # Template for frontend environment variables
-│   ├── index.html           # Document template with Inter font links
-│   ├── tailwind.config.js   # Tailwind style customization configurations
-│   └── package.json         # Frontend packages and scripts
-├── docker-compose.yml       # Docker compose file for running PostgreSQL in production
-└── README.md                # Project documentation
+│   │   ├── components/                  # Common parts (Navbar, ProtectedRoute)
+│   │   ├── context/                     # AuthContext session provider
+│   │   ├── pages/                       # Marketplace pages (Home, Details, Forms, Dash)
+│   │   ├── services/                    # Axios API client interceptors
+│   │   ├── App.tsx                      # Core router layout
+│   │   └── main.tsx                     # React mount entry
+│   ├── .env.example
+│   ├── index.html
+│   ├── tailwind.config.js
+│   └── package.json
+├── docker-compose.yml                   # Production PostgreSQL database service
+└── README.md                            # Project documentation
 ```
 
 ---
 
-## 🚦 Getting Started (Local Run)
+## Methodology
+1.  **Relational Modeling**: Constructed the SQLite schema defining matching tables for `User` and `Listing` with automatic delete cascades.
+2.  **API Development**: Coded Express routes validating input criteria, hashing password data, and verifying JWT tokens in request headers.
+3.  **Local Image Uploads**: Set up Multer disk storage and exposed the `uploads/` folder as a static path on the Express server.
+4.  **Integrated Dashboard**: Created state managers on the frontend retrieving listings and calculating totals.
+5.  **Build Verification**: Ran automated compile scripts to ensure strict TypeScript checks were resolved without errors.
 
-Follow these simple commands to run the project locally.
+---
+
+## Key Configuration Categories
+The platform enforces strict rules on the allowed values for item fields:
+
+*   **Allowed Categories**: `Furniture`, `Electronics`, `Books`, `Kitchen`, `Clothing`, `Home`, `Other`.
+*   **Allowed Conditions**: `New`, `Like New`, `Good`, `Fair`, `Poor`.
+*   **Allowed Statuses**: `Available`, `Sold`.
+
+---
+
+## Key KPIs (Seller Dashboard)
+*   **Total Listed**: Cumulative count of all items listed by the student.
+*   **Active Items**: Count of listed items currently set to "Available".
+*   **Items Sold**: Count of listed items currently marked as "Sold".
+*   **Total Earnings**: Cumulative earnings generated from all "Sold" items.
+
+---
+
+## Visual Insights
+Below are the key user interface screens built into the platform:
+
+1.  **Marketplace Grid**: Displays listings in a responsive card grid showing visual badges, conditions, prices, locations, and posted dates.
+2.  **Search & Filters**: Top search bar with side panels filtering by category, condition, status, and maximum price boundaries.
+3.  **Product Details Split View**: Large left-column visual layouts paired with right-column product data, safety alert boxes, and action keys.
+4.  **Interactive Forms**: Clean input forms supporting file upload inputs, image deletion triggers, and preview thumbnails.
+
+---
+
+## Main Insights & Recommendations
+*   **Authentication & Security**: The app safely intercepts expired tokens and logs users out automatically.
+    *   *Recommendation*: Keep the JWT token in `localStorage` for testing convenience, but migrate to `httpOnly` secure cookies for production deployment to mitigate XSS exposure.
+*   **Safety Protocols**: Non-owners are provided with email mailto triggers and clear meetup safety instructions.
+    *   *Recommendation*: Advise students in the safety note to meet in well-lit, public campus zones (like the Library or Student Quad) and avoid carrying large amounts of cash.
+
+---
+
+## How to Run the Project
 
 ### Prerequisites
-Make sure you have **Node.js (v18+)** and **npm** installed.
+*   Node.js (v18+)
+*   npm
 
 ### 1. Database & Backend Setup
-1. Open a terminal and navigate to the backend folder:
-   ```bash
-   cd backend
-   ```
-2. Install backend dependencies:
-   ```bash
-   npm install
-   ```
-3. Set up the `.env` file from the template:
-   ```bash
-   cp .env.example .env
-   ```
-4. Run migrations to initialize the database:
-   ```bash
-   npx prisma migrate dev --name init
-   ```
-5. Seed the database with 2 demo users and 10 sample listings:
-   ```bash
-   npx prisma db seed
-   ```
-6. Start the backend development server:
-   ```bash
-   npm run dev
-   ```
-   *The backend will boot up on [http://localhost:5000](http://localhost:5000).*
+1.  **Navigate to the backend folder**:
+    ```bash
+    cd backend
+    ```
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Set up the environment file**:
+    ```bash
+    cp .env.example .env
+    ```
+4.  **Run migrations to initialize SQLite database**:
+    ```bash
+    npx prisma migrate dev --name init
+    ```
+5.  **Seed the database with 2 demo users and 10 listings**:
+    ```bash
+    npx prisma db seed
+    ```
+6.  **Start the backend development server**:
+    ```bash
+    npm run dev
+    ```
+    *The backend server will run on [http://localhost:5000](http://localhost:5000).*
 
 ### 2. Frontend Setup
-1. Open a second terminal and navigate to the frontend folder:
-   ```bash
-   cd frontend
-   ```
-2. Install frontend dependencies:
-   ```bash
-   npm install
-   ```
-3. Set up the `.env` file from the template:
-   ```bash
-   cp .env.example .env
-   ```
-4. Start the frontend development server:
-   ```bash
-   npm run dev
-   ```
-   *Open [http://localhost:5173](http://localhost:5173) in your browser to view the application.*
+1.  **Open a new terminal window and navigate to the frontend folder**:
+    ```bash
+    cd ../frontend
+    ```
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3.  **Set up the environment file**:
+    ```bash
+    cp .env.example .env
+    ```
+4.  **Start the frontend development server**:
+    ```bash
+    npm run dev
+    ```
+    *Open [http://localhost:5173](http://localhost:5173) in your browser to view the website.*
 
 ---
 
-## 🔒 Environment Variables
-
-### Backend (`backend/.env`)
-```env
-DATABASE_URL="file:./dev.db"
-JWT_SECRET=super_secret_jwt_pass_phrase_123!
-PORT=5000
-CLIENT_URL=http://localhost:5173
-```
-
-### Frontend (`frontend/.env`)
-```env
-VITE_API_BASE_URL=http://localhost:5000/api
-```
+## Demo Credentials
+Log in with either of these accounts to test owner-specific controls (editing, deleting, and marking items as sold):
+*   **User 1**: `alice@campus.edu` / `password123`
+*   **User 2**: `bob@campus.edu` / `password123`
 
 ---
 
-## 🔗 Core API Endpoints
+## Core API Endpoints
 
-### Authentication
-- `POST /api/auth/signup` - Register new user
-- `POST /api/auth/login` - Authenticate user credentials
-- `GET /api/auth/me` - Fetch current user profile (Protected)
+### Auth Endpoint (`/api/auth`)
+*   `POST /signup` - Register a new account.
+*   `POST /login` - Login to an existing account.
+*   `GET /me` - Retrieve profile of the authenticated user (Protected).
 
-### Listings
-- `GET /api/listings` - Public list of listings (Supports query params: `search`, `category`, `condition`, `status`, `maxPrice`)
-- `GET /api/listings/:id` - Fetch details for a specific listing
-- `POST /api/listings` - Create a listing (Protected, supports image upload)
-- `PUT /api/listings/:id` - Edit listing details (Protected, Owner Only, supports image replacement)
-- `DELETE /api/listings/:id` - Delete a listing (Protected, Owner Only)
-- `PATCH /api/listings/:id/sold` - Mark a listing as sold (Protected, Owner Only)
+### Listings Endpoint (`/api/listings`)
+*   `GET /` - Public listings search (Supports parameters: `search`, `category`, `condition`, `status`, `maxPrice`).
+*   `GET /:id` - Get specific listing information.
+*   `POST /` - Post a new listing (Protected, supports image upload).
+*   `PUT /:id` - Edit listing details (Protected, Owner Only, supports image replacement).
+*   `DELETE /:id` - Delete a listing (Protected, Owner Only).
+*   `PATCH /:id/sold` - Mark a listing as sold (Protected, Owner Only).
 
-### User Metrics
-- `GET /api/users/me/listings` - Fetch logged-in user's own listings (Protected)
-
----
-
-## 🧑‍💻 Demo Credentials
-You can log in immediately using these pre-seeded accounts:
-- **User 1:** `alice@campus.edu` / `password123`
-- **User 2:** `bob@campus.edu` / `password123`
+### User Endpoint (`/api/users`)
+*   `GET /me/listings` - Get listings posted by the logged-in user (Protected).
 
 ---
 
-## 📈 Future Improvements
-- **Live Chat Messaging:** Replace `mailto:` links with socket-based direct messaging between students.
-- **Email Verification:** Implement student domain verification (e.g., enforcing `.edu` email domains).
-- **Interactive Map:** Integrate campus map pin locations to guide exchange drop-off spots.
-- **Favoriting:** Allow students to bookmark listings for later review.
+## Project Limitations
+*   **Local Image Storage**: Images are saved in a local folder (`backend/uploads/`). Deploying to cloud instances (like Heroku or render.com) with ephemeral filesystems requires swapping this setup to use cloud bucket hosting (like AWS S3).
+*   **Simplified Token Storage**: JWT tokens are kept in `localStorage` for testing convenience. It is recommended to use HTTP-Only cookie tokens in production.
+
+## Future Improvements
+*   **Live Chat Messaging**: Integrate socket connection libraries (like Socket.io) to support in-app messages, replacing mailto email buttons.
+*   **Verified Edu Domains**: Restrict signups to users with university email addresses (e.g. validating `.edu` domains).
+*   **Drop-off Maps**: Add mapping locations for specific campus drop-off zones.
 
 ---
 
-## 📝 Resume Bullet
+## Resume Bullet
 > "Built CampusCart, a full-stack campus marketplace web application using React, TypeScript, Node.js, Express, PostgreSQL, Prisma, and JWT authentication, allowing students to post used items, upload images, search/filter listings, contact sellers, and manage item availability through a seller dashboard."
+
+---
+**Author: Sharadha Karthikeyan**
