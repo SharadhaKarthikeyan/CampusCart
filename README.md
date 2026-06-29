@@ -10,33 +10,37 @@
 
 ---
 
+**Tech Stack:** React, TypeScript, Node.js, Express, Prisma, SQLite, Tailwind CSS
+
+---
+
 ## Project Overview
 University students frequently need to sell used textbooks, dorm furniture, electronics, and clothing, or buy affordable items from graduating students. Generic public marketplaces lack trust and expose students to shipping costs or safety concerns when meeting strangers off-campus.
 
-CampusCart is a secure, campus-focused buy/sell marketplace web application. It connects students within a trusted university community, enabling them to browse listings, filter products, manage items, and contact sellers. The project utilizes a modern full-stack architecture to deliver a polished, responsive, and secure trading platform.
+CampusCart is a campus-focused marketplace with authentication, protected seller actions, and safety-focused meetup guidance. It connects students within a trusted university community, enabling them to browse listings, filter products, manage items, and contact sellers. The project utilizes a modern full-stack architecture to deliver a polished, responsive web interface.
 
 ## Project Background
 CampusCart was developed as a complete portfolio project to demonstrate end-to-end full-stack software development skills. Rather than a basic mock application, it builds a fully functioning marketplace integrating local image hosting, structured database models, and relational queries.
 
-The platform includes JWT-based user authentication, secure password hashing, custom role-based route protection, static file uploads, and a visual dashboard for sellers. The workspace uses SQLite for local configuration simplicity (designed to easily swap to PostgreSQL in production), combined with a Vite-React frontend to model a responsive user experience.
+SQLite is used for local development with Prisma ORM, and the project is designed to be easily migrated to PostgreSQL for production. It uses a Vite-React frontend to model a responsive user experience.
 
 ## Portfolio Highlights
 This project demonstrates proficiency in:
 *   **Full-Stack TypeScript Integration**: Shared type definitions, type-safe API requests, and controller routing models.
 *   **Database Relational Mapping**: Constructing one-to-many associations (User has many Listings) and querying relational models with Prisma ORM.
 *   **Image Processing & Local Storage**: Configuring Multer disk storage on the backend to dynamically save and statically serve uploaded files.
-*   **Secure Authentication (JWT & Cryptography)**: Storing hashed password keys with bcryptjs and validating client sessions with bearer JWT authorization middleware.
+*   **Security & Session Authentication**: Hashing user passwords with bcryptjs before storing them in the database and validating client sessions with bearer JWT authorization middleware.
 *   **Responsive Mobile-First UI**: Building collapsible navbar drawers, interactive filters, card lists, and skeleton loading views with Tailwind CSS.
-*   **Interactive Analytics Dashboard**: Calculating active inventory levels, sales conversions, and estimated cumulative profit metrics dynamically.
+*   **Interactive Analytics Dashboard**: Calculating active inventory levels, sold item counts and estimated cumulative earnings dynamically.
 
 ---
 
 ## Business Problem
-University students suffer from financial constraints and lack a direct, trusted method to exchange goods locally. Using public listings services (like Craigslist or eBay) introduces risks of scams, requires expensive shipping, or forces students to meet off-campus. Facility managers and housing offices also face excessive waste when departing students discard usable furniture and electronics due to a lack of simple redistribution channels on campus.
+University students suffer from financial constraints and lack a direct, trusted method to exchange goods locally. Using public listings services (like Craigslist or eBay) introduces risks of scams, requires expensive shipping, or forces students to meet off-campus. Campuses also face unnecessary waste when students discard usable furniture, electronics, and supplies during move-out periods.
 
 ## Project Objective
 To build a multi-layered trading platform that:
-1.  **Ingests & Visualizes** items in a responsive card grid mapping category, condition, price, and campus location.
+1.  **Enables users to create, browse, search, filter, and manage item listings** in a responsive card grid mapping category, condition, price, and campus location.
 2.  **Protects User Sessions** using JWT authentication, blocking unauthorized edits, deletes, or status changes.
 3.  **Facilitates Safe Meetups** by restricting communication to official campus emails and highlighting physical safety reminders.
 4.  **Generates Seller Analytics** to summarize total active posts and calculate cumulative sales earnings.
@@ -92,7 +96,7 @@ CampusCart/
 │   ├── index.html
 │   ├── tailwind.config.js
 │   └── package.json
-├── docker-compose.yml                   # Production PostgreSQL database service
+├── docker-compose.yml                   # Optional PostgreSQL database service for production-style setup
 └── README.md                            # Project documentation
 ```
 
@@ -131,14 +135,6 @@ Below are the key user interface screens built into the platform:
 2.  **Search & Filters**: Top search bar with side panels filtering by category, condition, status, and maximum price boundaries.
 3.  **Product Details Split View**: Large left-column visual layouts paired with right-column product data, safety alert boxes, and action keys.
 4.  **Interactive Forms**: Clean input forms supporting file upload inputs, image deletion triggers, and preview thumbnails.
-
----
-
-## Main Insights & Recommendations
-*   **Authentication & Security**: The app safely intercepts expired tokens and logs users out automatically.
-    *   *Recommendation*: Keep the JWT token in `localStorage` for testing convenience, but migrate to `httpOnly` secure cookies for production deployment to mitigate XSS exposure.
-*   **Safety Protocols**: Non-owners are provided with email mailto triggers and clear meetup safety instructions.
-    *   *Recommendation*: Advise students in the safety note to meet in well-lit, public campus zones (like the Library or Student Quad) and avoid carrying large amounts of cash.
 
 ---
 
@@ -201,25 +197,50 @@ Log in with either of these accounts to test owner-specific controls (editing, d
 *   **User 1**: `alice@campus.edu` / `password123`
 *   **User 2**: `bob@campus.edu` / `password123`
 
+> [!WARNING]
+> These credentials are for local demo/testing only and should not be used in production.
+
 ---
 
 ## Core API Endpoints
 
-### Auth Endpoint (`/api/auth`)
-*   `POST /signup` - Register a new account.
-*   `POST /login` - Login to an existing account.
-*   `GET /me` - Retrieve profile of the authenticated user (Protected).
+### Auth Routes — `/api/auth`
 
-### Listings Endpoint (`/api/listings`)
-*   `GET /` - Public listings search (Supports parameters: `search`, `category`, `condition`, `status`, `maxPrice`).
-*   `GET /:id` - Get specific listing information.
-*   `POST /` - Post a new listing (Protected, supports image upload).
-*   `PUT /:id` - Edit listing details (Protected, Owner Only, supports image replacement).
-*   `DELETE /:id` - Delete a listing (Protected, Owner Only).
-*   `PATCH /:id/sold` - Mark a listing as sold (Protected, Owner Only).
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/signup` | Register a new account |
+| POST | `/login` | Login to an existing account |
+| GET | `/me` | Retrieve authenticated user profile (Protected) |
 
-### User Endpoint (`/api/users`)
-*   `GET /me/listings` - Get listings posted by the logged-in user (Protected).
+### Listings Routes — `/api/listings`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Public listings search (Supports parameters: `search`, `category`, `condition`, `status`, `maxPrice`) |
+| GET | `/:id` | Get specific listing information |
+| POST | `/` | Post a new listing (Protected, supports image upload) |
+| PUT | `/:id` | Edit listing details (Protected, Owner Only, supports image replacement) |
+| DELETE | `/:id` | Delete a listing (Protected, Owner Only) |
+| PATCH | `/:id/sold` | Mark a listing as sold (Protected, Owner Only) |
+
+### User Routes — `/api/users`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/me/listings` | Get listings posted by the logged-in user (Protected) |
+
+---
+
+## Demo / Screenshots
+*   Marketplace grid
+*   Listing details page
+*   Create listing form
+*   Seller dashboard
+
+---
+
+## Production Deployment Notes
+For production deployment, image storage should be migrated from local uploads to cloud object storage such as AWS S3, and JWT storage should be moved from localStorage to HTTP-only secure cookies.
 
 ---
 
@@ -235,7 +256,7 @@ Log in with either of these accounts to test owner-specific controls (editing, d
 ---
 
 ## Resume Bullet
-> "Built CampusCart, a full-stack campus marketplace web application using React, TypeScript, Node.js, Express, PostgreSQL, Prisma, and JWT authentication, allowing students to post used items, upload images, search/filter listings, contact sellers, and manage item availability through a seller dashboard."
+> "Built CampusCart, a full-stack campus marketplace using React, TypeScript, Node.js, Express, Prisma, SQLite, and JWT authentication, enabling students to create listings, upload images, search/filter items, contact sellers, and manage item status through a seller dashboard."
 
 ---
 **Author: Sharadha Karthikeyan**
